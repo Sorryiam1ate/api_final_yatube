@@ -1,13 +1,7 @@
-from rest_framework import serializers
-
 from django.contrib.auth.models import User
-from posts.models import Comment, Post, Follow
-from rest_framework.exceptions import ValidationError
-
-
+from posts.models import Comment, Follow, Group, Post
 from rest_framework import serializers
-
-from posts.models import Comment, Group, Post
+from rest_framework.exceptions import ValidationError
 
 
 class PostSerializer(serializers.ModelSerializer):

@@ -1,22 +1,14 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated
 from api.permissions import AuthorOrReadOnly, ReadOnly
+from api.serializers import (CommentsSerializer, FollowSerializer,
+                             GroupsSerializer, PostSerializer)
 from django.contrib.auth.models import User
-from rest_framework.exceptions import ValidationError
-from rest_framework import filters
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django.shortcuts import get_object_or_404
+from posts.models import Comment, Follow, Group, Post
+from rest_framework import filters, viewsets
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.pagination import LimitOffsetPagination
-
-
-from posts.models import Comment, Group, Post, Follow
-from api.serializers import (
-    CommentsSerializer,
-    GroupsSerializer,
-    PostSerializer,
-    FollowSerializer,
-)
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 
 
 class PostsViewSet(viewsets.ModelViewSet):
