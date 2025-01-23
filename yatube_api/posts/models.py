@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Group(models.Model):
     title = models.CharField(
-        max_length=30,
+        max_length=200,
         verbose_name="Название группы")
     slug = models.SlugField(unique=True)
     description = models.TextField(verbose_name="Описание")
@@ -57,9 +57,6 @@ class Follow(models.Model):
     following = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='followers')
 
-    def __str__(self):
-        return f"{self.user.username} follows {self.following.username}"
-
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -67,3 +64,6 @@ class Follow(models.Model):
                 name='unique_following'
             )
         ]
+
+    def __str__(self):
+        return f"{self.user.username} follows {self.following.username}"

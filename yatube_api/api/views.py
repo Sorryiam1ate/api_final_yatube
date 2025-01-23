@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-
-from rest_framework import filters, mixins, viewsets
+from rest_framework import (
+    filters,
+    mixins,
+    viewsets
+)
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import (
     AllowAny,
@@ -67,9 +70,7 @@ class FollowViewSet(
         return self.request.user.follows.all()
 
     def perform_create(self, serializer):
-        following_username = self.request.data.get('following')
-        following_user = get_object_or_404(User, username=following_username)
-        serializer.save(user=self.request.user, following=following_user)
+        serializer.save(user=self.request.user)
 
 
 class GroupsViewSet(viewsets.ReadOnlyModelViewSet):
