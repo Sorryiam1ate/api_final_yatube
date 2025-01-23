@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+
 from posts.models import Comment, Follow, Group, Post
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -28,7 +30,7 @@ class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
-        read_only_fields = ['post']
+        read_only_fields = ('post',)
 
 
 class GroupsSerializer(serializers.ModelSerializer):
@@ -44,19 +46,20 @@ class FollowSerializer(serializers.ModelSerializer):
     following = serializers.SlugRelatedField(
         slug_field='username', queryset=User.objects.all())
 
-    def validate(self, data):
-        if not data.get('following'):
+    class Meta:
+        model = Follow
+        fields = ('user', 'following')
+
+    def validate_following(self, value):
+        if not value:
             raise ValidationError(
                 "Поле following не может быть пустым")
 
         user = self.context['request'].user
-        following_user = data.get('following')
+        if user == value:
+            raise ValidationError("Нельзя подписываться на самого себя.")
 
-        if Follow.objects.filter(user=user, following=following_user).exists():
+        if Follow.objects.filter(user=user, following=value).exists():
             raise ValidationError("Вы уже подписаны на этого автора.")
 
-        return data
-
-    class Meta:
-        model = Follow
-        fields = '__all__'
+        return value
