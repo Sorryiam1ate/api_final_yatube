@@ -1,22 +1,22 @@
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+
+from rest_framework import filters, mixins, viewsets
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
+
+from api.permissions import AuthorOrReadOnly
 from api.serializers import (
     CommentsSerializer,
     FollowSerializer,
     GroupsSerializer,
-    PostSerializer,
+    PostSerializer
 )
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 from posts.models import Group, Post
-from rest_framework import filters, viewsets
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import (
-    IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
-    AllowAny,
-)
-
-from api.permissions import AuthorOrReadOnly
-from rest_framework import mixins, viewsets
 
 
 class PostsViewSet(viewsets.ModelViewSet):
